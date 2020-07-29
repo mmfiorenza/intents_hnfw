@@ -1,0 +1,64 @@
+configure terminal
+!
+{%- if 'acl' in name %}
+{%-     if from_interface is defined %}
+{%-         if 'insert' in apply %}
+access-list {{ from_interface }}_access_in line 1 extended {{ rule }} {{ traffic }} {{ from }} {{ to }} {{ traffic_port }}
+access-group {{ from_interface }}_access_in in interface {{ from_interface }}
+clear conn
+{%-         elif 'remove' in apply %}
+no access-list {{ from_interface }}_access_in line 1 extended {{ rule }} {{ traffic }} {{ from }} {{ to }} {{ traffic_port }}
+clear conn
+{%-         endif %}
+{%-     elif to_interface is defined %}
+{%-         if 'insert' in apply %}
+access-list {{ to_interface }}_access_in line 1 extended {{ rule }} {{ traffic }} {{ from }} {{ to }} {{ traffic_port }}
+access-group {{ from_interface }}_access_in in interface {{ from_interface }}
+clear conn
+{%-         elif 'remove' in apply %}
+no access-list {{ to_interface }}_access_in line 1 extended {{ rule }} {{ traffic }} {{ from }} {{ to }} {{ traffic_port }}
+clear conn
+{%-         endif %}
+{%-     endif%}
+
+
+{%- elif 'nat' in name %}
+{%-     if from_port is defined and to_port is defined %}
+{%-         if 'insert' in apply %}
+static ({{ from_interface }},{{ to_interface }}) {{ protocol }} {{ to }} {{ to_port }} {{ from }} {{ from_port }} netmask 255.255.255.255 tcp 0 0 udp 0
+{%-         elif 'remove' in apply %}
+no static ({{ from_interface }},{{ to_interface }}) {{ protocol }} {{ to }} {{ to_port }} {{ from }} {{ from_port }} netmask 255.255.255.255 tcp 0 0 udp 0
+{%-         endif %}
+{%-     else %}
+{%-         if 'insert' in apply %}
+static ({{ from_interface }},{{ to_interface }}) {{ to }} {{ from }} netmask 255.255.255.255 tcp 0 0 udp 0
+{%-         elif 'remove' in apply %}
+no static ({{ from_interface }},{{ to_interface }}) {{ to }} {{ from }} netmask 255.255.255.255 tcp 0 0 udp 0
+{%-         endif %}
+{%-     endif %}
+{%- elif 'traffic_shaping' in name %}
+{%-     if 'insert' in apply %}
+access-list global_mpc line 1 extended permit {{ traffic }} {{ from }} {{ to }} {{ traffic_port }}
+access-list global_mpc line 2 extended permit {{ traffic }} {{ to }} {{ from }} {{ traffic_port }}
+class-map global-class-{{ policy }}
+  match access-list global_mpc
+policy-map global_policy
+  class global-class-{{ policy }}
+    police input {{ with }} {{ rate }} conform-action transmit exceed-action drop
+    police output {{ with }} {{ rate }} conform-action transmit exceed-action drop
+!
+exit
+!
+exit
+!
+clear conn
+{%-     elif 'remove' in apply %}
+policy-map global_policy
+  no class global-class-{{ policy }}
+no class-map global-class-{{ policy }}
+clear configure access-list global_mpc
+clear conn
+{%-     endif %}
+{%- endif %}
+!
+exit
