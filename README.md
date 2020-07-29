@@ -11,14 +11,14 @@ Acesse a pasta do projeto.
 
 Execute o script "prepares_environment.sh" para instalação das dependências
 
-`sudo bash utils/prepares_environment.sh`
+`sudo bash scritps/prepares_environment.sh`
 
 
 ## Uso
 Execute os módulos tradutores utilizando o script “run_application.sh”
 
 ```bash
-sudo bash utils/run_application.sh
+sudo bash scritps/run_application.sh
 ```
 
 Execute a API para recepção das intenções
@@ -59,14 +59,14 @@ Access the project folder.
 
 Run the "prepares_environment.sh" script to install the dependenciess
 
-`sudo bash utils/prepares_environment.sh`
+`sudo bash scritps/prepares_environment.sh`
 
 
 ## Usage
 Run the translator modules using the script “run_application.sh”
 
 ```bash
-sudo bash utils/run_application.sh
+sudo bash scritps/run_application.sh
 ```
 
 Run the API to receive intentions
