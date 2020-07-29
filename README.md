@@ -5,7 +5,7 @@ Este repositório traz o protótipo desenvolvido como forma de validação para 
 ## Instalação do software
 Faça o download do projeto utilizando git
 
-`git clone https://github.com/mmfiorenza/intent_translator.git`
+`git clone https://github.com/mmfiorenza/sbseg_version`
 
 Acesse a pasta do projeto.
 
