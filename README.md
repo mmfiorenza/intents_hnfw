@@ -32,7 +32,7 @@ Utilize o metodo HTTP POST (por exemplo: comando curl) para enviar a intenção 
 ```bash
 curl --data-binary "@intent.txt" -X POST http://localhost:5000
 ```
-Exemplos das três intenções suportadas estão disponíveis na pasta “examples”.
+Exemplos das três intenções suportadas estão disponíveis na pasta “intent_examples”.
 
 
 ## Suporte
@@ -80,7 +80,7 @@ Use the HTTP POST method (for example: curl command) to send the intention in NI
 ```bash
 curl --data-binary "@intent.txt" -X POST http://localhost:5000
 ```
-Examples of the three supported intentions are available in the “examples” folder.
+Examples of the three supported intentions are available in the “intent_examples” folder.
 
 
 ## Support
