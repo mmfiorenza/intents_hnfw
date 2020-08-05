@@ -59,21 +59,21 @@ Run the "prepares_environment.sh" script to install the dependencies
 ## Usage
 Run the translator modules using the “run_application.sh” script
 
-` bash
+``` bash
 bash utils/run_application.sh
-`
+```
 
 Run the API to receive intentions
 
-`` bash
+``` bash
 python3.7 api.py
-``
+```
 
 To send one use the HTTP POST method (for example: curl command) to send the intention in NILE to the application:
 
-`` bash
+``` bash
 curl --data-binary "@intent.txt" -X POST http://localhost:5000
-``
+```
 
 Examples of the three supported intentions are available in the “intent_examples” folder.
 
