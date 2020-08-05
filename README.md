@@ -5,20 +5,18 @@ Este repositório traz o protótipo desenvolvido como forma de validação para 
 ## Instalação do software
 Faça o download do projeto utilizando git
 
-`git clone https://github.com/mmfiorenza/sbseg_version`
-
-Acesse a pasta do projeto.
+`git clone https://github.com/mmfiorenza/intents_hnfw`
 
 Execute o script "prepares_environment.sh" para instalação das dependências
 
-`sudo bash scritps/prepares_environment.sh`
+`sudo utils/prepares_environment.sh`
 
 
 ## Uso
 Execute os módulos tradutores utilizando o script “run_application.sh”
 
 ```bash
-sudo bash scritps/run_application.sh
+bash utils/run_application.sh
 ```
 
 Execute a API para recepção das intenções
@@ -27,7 +25,7 @@ Execute a API para recepção das intenções
 python3.7 api.py
 ```
 
-Utilize o metodo HTTP POST (por exemplo: comando curl) para enviar a intenção em NILE para a aplicação:
+Para enviar uma utilize o metodo HTTP POST (por exemplo: comando curl) para enviar a intenção em NILE para a aplicação:
 
 ```bash
 curl --data-binary "@intent.txt" -X POST http://localhost:5000
@@ -49,43 +47,39 @@ Este software não possui nenhuma forma de suporte. Caso tenha alguma dúvida fa
 ## Validation prototype
 This repository presents the prototype developed as a form of validation for the proposed architecture that aims to guide the development of software for firewall management in hybrid networks.
 
-
 ## Software installation
 Download the project using git
 
-`git clone https://github.com/mmfiorenza/sbseg_version`
+`git clone https://github.com/mmfiorenza/intents_hnfw`
 
-Access the project folder.
+Run the "prepares_environment.sh" script to install the dependencies
 
-Run the "prepares_environment.sh" script to install the dependenciess
-
-`sudo bash scritps/prepares_environment.sh`
-
+`sudo utils/prepares_environment.sh`
 
 ## Usage
-Run the translator modules using the script “run_application.sh”
+Run the translator modules using the “run_application.sh” script
 
-```bash
-sudo bash scritps/run_application.sh
-```
+` bash
+bash utils/run_application.sh
+`
 
 Run the API to receive intentions
 
-```bash
+`` bash
 python3.7 api.py
-```
+``
 
-Use the HTTP POST method (for example: curl command) to send the intention in NILE to the application:
+To send one use the HTTP POST method (for example: curl command) to send the intention in NILE to the application:
 
-```bash
+`` bash
 curl --data-binary "@intent.txt" -X POST http://localhost:5000
-```
+``
+
 Examples of the three supported intentions are available in the “intent_examples” folder.
 
 
 ## Support
 This software does not have any form of support. If you have any questions please send an email to mauriciofiorenza.aluno@unipampa.edu.br.
-
 
 ## Credits
 * Development: Maurício Fiorenza
