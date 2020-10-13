@@ -20,7 +20,7 @@ cd venv_firewall
 
 Faça o download do projeto utilizando git
 
-`git clone https://github.com/mmfiorenza/intents_hnfw`
+`git clone https://github.com/mmfiorenza/intents_hnfw.git`
 
 Acesse a pasta do projeto.
 
@@ -87,7 +87,7 @@ cd venv_firewall
 
 Download the project using git
 
-`git clone https://github.com/mmfiorenza/intents_hnfw`
+`git clone https://github.com/mmfiorenza/intents_hnfw.git`
 
 Access the project folder.
 
