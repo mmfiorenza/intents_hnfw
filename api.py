@@ -2,8 +2,9 @@ from flask import Flask, request
 import re
 import socket
 import struct
+#import os
 from nameko.standalone.rpc import ClusterRpcProxy
-from nameko import exceptions
+#from nameko import exceptions
 
 
 CONFIG = {'AMQP_URI': "amqp://guest:guest@localhost:5672"}
@@ -102,15 +103,9 @@ def process_intent_acl(dict_intent, intent_type):
         else:
             flag = 1
             text_return += ' ' + parameter + ','
-    print(dict_intent)
+    # print(dict_intent)
     if flag == 0:
-        result_cisco = 'Cisco commands for ACL: \n'
-        result_iptables = 'IPTABLES commands for ACL: \n'
-        with ClusterRpcProxy(CONFIG) as rpc:
-            result_cisco = result_cisco + rpc.cisco_translator.intent_to_cisco(dict_intent)
-            result_iptables = result_iptables + rpc.iptables_translator.intent_to_iptables(dict_intent)
-        result = result_cisco + '\n\n\n' + result_iptables
-        return result
+        return send_to_translate(dict_intent)
     else:
         return text_return
 
@@ -158,15 +153,9 @@ def process_intent_nat11(dict_intent, intent_type):
         else:
             flag = 1
             text_return += ' ' + parameter + ','
-    print(dict_intent)
+    # print(dict_intent)
     if flag == 0:
-        result_cisco = 'Cisco commands for NAT11: \n'
-        result_iptables = 'IPTABLES commands for NAT11: \n'
-        with ClusterRpcProxy(CONFIG) as rpc:
-            result_cisco = result_cisco + rpc.cisco_translator.intent_to_cisco(dict_intent)
-            result_iptables = result_iptables + rpc.iptables_translator.intent_to_iptables(dict_intent)
-        result = result_cisco + '\n\n\n' + result_iptables
-        return result
+        return send_to_translate(dict_intent)
     else:
         return text_return
 
@@ -216,17 +205,32 @@ def process_intent_traffic_shaping(dict_intent, intent_type):
         else:
             flag = 1
             text_return += ' ' + parameter + ','
-    print(dict_intent)
+    # print(dict_intent)
     if flag == 0:
-        result_cisco = 'Cisco commands for Traffic Shaping: \n'
-        result_iptables = 'IPTABLES commands for Traffic Shaping: \n'
-        with ClusterRpcProxy(CONFIG) as rpc:
-            result_cisco = result_cisco + rpc.cisco_translator.intent_to_cisco(dict_intent)
-            result_iptables = result_iptables + rpc.iptables_translator.intent_to_iptables(dict_intent)
-        result = result_cisco + '\n\n\n' + result_iptables
-        return result
+        return send_to_translate(dict_intent)
     else:
         return text_return
+
+
+def send_to_translate(dict_intent):
+    result = "\n"
+    flag = 0
+    with open("conf/services_enable.conf", 'r') as archive:
+        for line in archive:
+            if line[0:1] != "#" and line[0:1] != " " and line[0:1] != "\n":
+                flag = 1
+                try:
+                    name, function = line.split()
+                except ValueError:
+                    return "ERROR: Check the file 'services_enable.conf'"
+                result = result + "\n --> Applied Commands in " + name + " firewall\n\n"
+                with ClusterRpcProxy(CONFIG) as rpc:
+                    command = "rpc." + function + "(dict_intent)"
+                    result = result + eval(command) + "\n"
+    if flag == 1:
+        return result
+    else:
+        return "ERROR: Check the file 'services_enable.conf'"
 
 
 def process_intent(intent):
@@ -247,7 +251,7 @@ def process_intent(intent):
             final_intent[key] = value.lower()
         except ValueError:
             return 'Incomplete intent for type "'+intent_type.upper()+'", see /help'
-    print(final_intent)
+    # print(final_intent)
     if intent_type == 'acl':
         return process_intent_acl(final_intent, intent_type)
     elif intent_type == 'nat11':

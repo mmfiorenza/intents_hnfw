@@ -4,7 +4,6 @@ iptables -A {{ chain }} -s {{ from }} -d {{ to }} -p {{ traffic }} {{ traffic_po
 {%-     elif 'remove' in apply %}
 iptables -D {{ chain }} -s {{ from }} -d {{ to }} -p {{ traffic }} {{ traffic_port }} -j {{ rule }}
 {%-     endif %}
-
 {%- elif 'nat' in name %}
 {%-     if 'insert' in apply %}
 {%-         if from_port is defined %}

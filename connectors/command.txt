@@ -1,6 +1,5 @@
 configure terminal
 !
-no access-list inside_access_in line 1 extended deny icmp host 192.168.1.2 host 200.19.30.2 
-clear conn
+static (outside,inside) 192.168.1.2 200.19.0.2 netmask 255.255.255.255 tcp 0 0 udp 0
 !
 exit

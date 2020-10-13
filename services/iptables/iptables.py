@@ -61,16 +61,16 @@ def process_acl(dict_intent):
         dict_intent['from'] = dict_intent['from'] + '/' + dict_intent['from_mask']
     if 'to_mask' in dict_intent:
         dict_intent['to'] = dict_intent['to'] + '/' + dict_intent['to_mask']
-    print(dict_intent)
+    # print(dict_intent)
     # other configs
     dict_intent['password'] = config['password']
     file_loader = FileSystemLoader('.')
     env = Environment(loader=file_loader)
     template = env.get_template('iptables_template.j2')
     output = template.render(dict_intent)
-    with ClusterRpcProxy(CONFIG) as rpc_connect:
-        rpc_connect.ssh_connector.apply_config(config['ip_manage'], config['ssh_port'], config['username'], config['password'],
-                                               config['device_type'], output)
+    #with ClusterRpcProxy(CONFIG) as rpc_connect:
+    #    rpc_connect.ssh_connector.apply_config(config['ip_manage'], config['ssh_port'], config['username'], config['password'],
+    #                                           config['device_type'], output)
     return output
 
 
@@ -80,9 +80,9 @@ def process_nat11(dict_intent):
     env = Environment(loader=file_loader)
     template = env.get_template('iptables_template.j2')
     output = template.render(dict_intent)
-    with ClusterRpcProxy(CONFIG) as rpc_connect:
-        rpc_connect.ssh_connector.apply_config(config['ip_manage'], config['ssh_port'], config['username'],
-                                               config['password'], config['device_type'], output)
+    #with ClusterRpcProxy(CONFIG) as rpc_connect:
+    #    rpc_connect.ssh_connector.apply_config(config['ip_manage'], config['ssh_port'], config['username'],
+    #                                           config['password'], config['device_type'], output)
     return output
 
 
@@ -119,7 +119,7 @@ class IptablesService:
     zipcode_rpc = RpcProxy('iptables_service_translator')
 
     @rpc
-    def intent_to_iptables(self, dict_intent):
+    def translate_intent(self, dict_intent):
         if 'name' in dict_intent:
             output = check_values(dict_intent)
             if output is True:

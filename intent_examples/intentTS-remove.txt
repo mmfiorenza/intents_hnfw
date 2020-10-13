@@ -3,4 +3,4 @@ define intent traffic_shaping:
   to	endpoint('200.19.30.2')
   for	traffic('udp/5555')
   with	throughput('30Mbps')
-  apply insert
+  apply remove
