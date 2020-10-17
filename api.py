@@ -33,10 +33,14 @@ def is_valid_ip (ip):
 
 
 def search_in_arq(value, path):
+    result = None
     for line in open(path):
         if value in line:
-            _, value = line.split()
-    return value
+            _, result = line.split()
+    if result is None:
+        return False
+    else:
+        return result
 
 
 def identify_value(tag, value):
@@ -49,8 +53,8 @@ def identify_value(tag, value):
             if is_valid_ip(result):
                 value = result
                 tag_status_ok = True
-        if not tag_status_ok:
-            print('function DNS')
+        # if not tag_status_ok:
+        #    print('function DNS')
     elif tag == 'rule' or tag == 'for':
         if not tag_status_ok:
             value = search_in_arq(value, 'conf/hosts_protocols.conf')
@@ -93,8 +97,8 @@ def process_intent_acl(dict_intent, intent_type):
                 else:
                     return 'Syntax error in parameter: "' +parameter+'". Use "allow" or "block."'
                 result = identify_value(parameter, value)
-                if not result:
-                    return 'Not possible translate parameter "' + parameter + ': ' + dict_intent[parameter] + '"'
+                if result is False:
+                    return 'Not possible to translate the value into the parameter ' + parameter.upper() + ': "' + value + '"'
                 else:
                     dict_intent['traffic'] = result
             elif parameter == 'apply':
@@ -190,7 +194,7 @@ def process_intent_traffic_shaping(dict_intent, intent_type):
                     return 'Syntax error in parameter: ' + parameter
                 result = identify_value(parameter, value)
                 if not result:
-                    return 'Not possible translate parameter "' + parameter + ': ' + dict_intent[parameter] + '"'
+                    return 'Not possible to translate the value into the parameter ' + parameter.upper() + ': "' + value + '"'
                 else:
                     dict_intent['traffic'] = result
             elif parameter == 'with':

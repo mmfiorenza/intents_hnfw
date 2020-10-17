@@ -7,7 +7,7 @@
 # Last modification: 04-10-2020
 ####
 
-source venv_firewall/bin/activate
+source ../bin/activate
 
 cd services/cisco/
 nameko run cisco --broker amqp://guest:guest@localhost &
