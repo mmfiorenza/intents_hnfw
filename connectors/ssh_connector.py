@@ -46,7 +46,7 @@ class SSH:
                 ssh_session.send_command("exit" + '\n', expect_string='Logoff', cmd_verify=False)
             elif device_type == 'linux':
                 ssh_session.send_command("exit" + '\n', expect_string='$', cmd_verify=False)
-                ssh_session.send_command("exit" + '\n', expect_string='logout', cmd_verify=False)
+                ssh_session.send_command("exit" + '\n', expect_string='sair', cmd_verify=False)
             ssh_session.disconnect()
             return 'OK'
         except(netmiko.ssh_exception.NetMikoAuthenticationException,

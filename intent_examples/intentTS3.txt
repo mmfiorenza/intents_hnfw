@@ -3,4 +3,4 @@ define intent traffic_shaping:
   to	range('5.32.1.0/22')
   for	traffic('ftp')
   with	throughput('30Mbps')
-  apply apply
+  apply insert

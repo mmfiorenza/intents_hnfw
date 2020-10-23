@@ -2,4 +2,4 @@ define intent acl:
   from	endpoint('192.168.1.2')
   to	endpoint('200.19.30.2')
   rule	block('icmp')
-  apply remove
+  apply insert
