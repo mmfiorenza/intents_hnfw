@@ -57,6 +57,18 @@ def identify_value(tag, value):
         #    print('function DNS')
     elif tag == 'rule' or tag == 'for':
         if not tag_status_ok:
+            if value == "any":
+                tag_status_ok = True
+            elif "tcp/" in value or "udp/" in value:
+                _, port = value.split('/')
+                if port.isdigit():
+                    if 0 < int(port) <= 65536:
+                        tag_status_ok = True
+                    else:
+                        return False
+                else:
+                    return False
+        if not tag_status_ok:
             value = search_in_arq(value, 'conf/hosts_protocols.conf')
             tag_status_ok = True
     if tag_status_ok:
@@ -98,11 +110,11 @@ def process_intent_acl(dict_intent, intent_type):
                     return 'Syntax error in parameter: "' +parameter+'". Use "allow" or "block."'
                 result = identify_value(parameter, value)
                 if result is False:
-                    return 'Not possible to translate the value into the parameter ' + parameter.upper() + ': "' + value + '"'
+                    return 'Error in parameter ' + parameter.upper() + ': "' + value + '"'
                 else:
                     dict_intent['traffic'] = result
             elif parameter == 'apply':
-                if dict_intent['apply'] != 'insert' and dict_intent['apply'] != 'remove':
+                if dict_intent['apply'] != "insert" and dict_intent['apply'] != "remove":
                     return 'In parameter "apply" use "insert" or "remove"'
         else:
             flag = 1
@@ -125,6 +137,14 @@ def process_intent_nat11(dict_intent, intent_type):
                 if "endpoint('" in dict_intent[parameter] and "')" in dict_intent[parameter]:
                     value = re.search(r"'(.*)'", dict_intent[parameter]).group(1)
                     if '-' in value:
+                        if parameter == "from":
+                            value2 = re.search(r"'(.*)'", dict_intent["to"]).group(1)
+                            if '-' not in value2:
+                                return "ERROR: Use port in two endpoints"
+                        elif parameter == "to":
+                            value2 = re.search(r"'(.*)'", dict_intent["to"]).group(1)
+                            if '-' not in value2:
+                                return "ERROR: Use port in two endpoints"
                         value, port = value.split('-')
                         if is_valid_ip(value):
                             dict_intent[parameter] = value
@@ -151,9 +171,21 @@ def process_intent_nat11(dict_intent, intent_type):
             elif parameter == 'for':
                 if "traffic('" in dict_intent[parameter] and "')" in dict_intent[parameter]:
                     value = re.search(r"'(.*)'", dict_intent[parameter]).group(1)
-                    dict_intent['protocol'] = value
+                    if 'from_port' in dict_intent:
+                        if value == 'udp' or value == 'tcp':
+                            dict_intent['protocol'] = value
+                        else:
+                            return "Detected port, use 'tcp' ou 'udp' in parameter"  + parameter.upper()
+                    elif 'from_port' not in dict_intent:
+                        if value == 'any':
+                            dict_intent['protocol'] = value
+                        else:
+                            return "Use 'any' for all ports in parameter " + parameter.upper()
                 else:
                     return 'Syntax error in parameter: ' + parameter
+            elif parameter == 'apply':
+                if dict_intent['apply'] != "insert" and dict_intent['apply'] != "remove":
+                    return 'In parameter "apply" use "insert" or "remove"'
         else:
             flag = 1
             text_return += ' ' + parameter + ','
@@ -194,7 +226,7 @@ def process_intent_traffic_shaping(dict_intent, intent_type):
                     return 'Syntax error in parameter: ' + parameter
                 result = identify_value(parameter, value)
                 if not result:
-                    return 'Not possible to translate the value into the parameter ' + parameter.upper() + ': "' + value + '"'
+                    return 'Error in parameter ' + parameter.upper() + ': "' + value + '"'
                 else:
                     dict_intent['traffic'] = result
             elif parameter == 'with':
@@ -206,6 +238,9 @@ def process_intent_traffic_shaping(dict_intent, intent_type):
                         return 'Use "Mbps" in throughout'
                 else:
                     return 'Syntax error in parameter: "'+parameter
+            elif parameter == 'apply':
+                if dict_intent['apply'] != "insert" and dict_intent['apply'] != "remove":
+                    return 'In parameter "apply" use "insert" or "remove"'
         else:
             flag = 1
             text_return += ' ' + parameter + ','

@@ -1,0 +1,6 @@
+define intent traffic_shaping:
+  from	range('192.168.1.0/24')
+  to	endpoint('8.0.0.1')
+  for	traffic('any')
+  with	throughput('100Mbps')
+  apply insert

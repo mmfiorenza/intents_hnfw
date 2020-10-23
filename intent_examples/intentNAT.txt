@@ -1,0 +1,5 @@
+define intent nat11:
+  from	endpoint('200.19.0.2-90')
+  to	endpoint('192.168.1.2-80')
+  for 	traffic('tcp')
+  apply insert

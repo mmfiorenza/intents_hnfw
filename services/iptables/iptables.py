@@ -38,12 +38,18 @@ def process_acl(dict_intent):
 
     # identifies chain
     for interface in config['INTERFACES']:
+        if check_ip_network(dict_intent['from'], interface['addr']):
+            dict_intent['from_interface'] = interface['name']
+        elif check_ip_network(dict_intent['to'], interface['addr']):
+            dict_intent['to_interface'] = interface['name']
         if dict_intent['from'] == re.search(r'(.*)/', str(interface['addr'])).group(1):
             dict_intent['chain'] = 'OUTPUT'
         elif dict_intent['to'] == re.search(r'(.*)/', str(interface['addr'])).group(1):
             dict_intent['chain'] = 'INPUT'
         else:
             dict_intent['chain'] = 'FORWARD'
+    if 'from_interface' not in dict_intent and 'to_interface' not in dict_intent:
+        return "IPTABLES MODULE: Unrecognized network"
     # translate allow/block
     if dict_intent['rule'] == 'allow':
         dict_intent['rule'] = 'ACCEPT'
@@ -68,21 +74,28 @@ def process_acl(dict_intent):
     env = Environment(loader=file_loader)
     template = env.get_template('iptables_template.j2')
     output = template.render(dict_intent)
-    #with ClusterRpcProxy(CONFIG) as rpc_connect:
-    #    rpc_connect.ssh_connector.apply_config(config['ip_manage'], config['ssh_port'], config['username'], config['password'],
-    #                                           config['device_type'], output)
+    with ClusterRpcProxy(CONFIG) as rpc_connect:
+        rpc_connect.ssh_connector.apply_config(config['ip_manage'], config['ssh_port'], config['username'], config['password'],
+                                               config['device_type'], output)
     return output
 
 
 def process_nat11(dict_intent):
     config = yaml_load('iptables_config.yml')
+    for interface in config['INTERFACES']:
+        if check_ip_network(dict_intent['from'], interface['addr']):
+            dict_intent['from_interface'] = interface['name']
+        elif check_ip_network(dict_intent['to'], interface['addr']):
+            dict_intent['to_interface'] = interface['name']
+        else:
+            return 'CISCO MODULE: IP/Network not recognized'
     file_loader = FileSystemLoader('.')
     env = Environment(loader=file_loader)
     template = env.get_template('iptables_template.j2')
     output = template.render(dict_intent)
-    #with ClusterRpcProxy(CONFIG) as rpc_connect:
-    #    rpc_connect.ssh_connector.apply_config(config['ip_manage'], config['ssh_port'], config['username'],
-    #                                           config['password'], config['device_type'], output)
+    with ClusterRpcProxy(CONFIG) as rpc_connect:
+        rpc_connect.ssh_connector.apply_config(config['ip_manage'], config['ssh_port'], config['username'],
+                                               config['password'], config['device_type'], output)
     return output
 
 

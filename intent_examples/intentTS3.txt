@@ -1,0 +1,6 @@
+define intent traffic_shaping:
+  from	endpoint('192.168.1.100')
+  to	range('5.32.1.0/22')
+  for	traffic('ftp')
+  with	throughput('30Mbps')
+  apply apply
