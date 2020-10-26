@@ -34,7 +34,7 @@ class SSH:
                 ssh_session.send_command_expect("enable" + '\n', expect_string="Password: ")
                 ssh_session.send_command_expect(password + '\n', expect_string="# ")
             elif device_type == 'linux':
-                ssh_session.send_command_expect("sudo su" + '\n', expect_string=": ")
+                ssh_session.send_command_expect("sudo su" + '\n', expect_string="# ")
                 #ssh_session.send_command_expect(password + '\n', expect_string="# ")
             for line in archive:
                 print('Linha: ' + line)
