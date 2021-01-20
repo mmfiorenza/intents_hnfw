@@ -1,0 +1,21 @@
+root@firewall-iptables:/home/ubuntu# 
+root@firewall-iptables:/home/ubuntu# 
+root@firewall-iptables:/home/ubuntu# 
+root@firewall-iptables:/home/ubuntu# iptables -L
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain FORWARD (policy ACCEPT)
+target     prot opt source               destination         
+DROP       all  --  anywhere             200.19.0.20         
+ACCEPT     tcp  --  10.0.0.0/24          anywhere             tcp dpt:https
+ACCEPT     tcp  --  10.0.0.0/24          anywhere             tcp dpt:http
+ACCEPT     tcp  --  10.0.0.10            200.19.0.10          tcp dpt:mysql
+DROP       tcp  --  10.0.0.0/24          200.19.0.10          tcp dpt:mysql
+DROP       all  --  anywhere             anywhere            
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination         
+root@firewall-iptables:/home/ubuntu# 
+root@firewall-iptables:/home/ubuntu# 
+root@firewall-iptables:/home/ubuntu# 

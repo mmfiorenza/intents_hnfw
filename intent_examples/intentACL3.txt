@@ -1,5 +1,0 @@
-define intent acl:
-  from	endpoint('192.168.1.100')
-  to	range('45.10.22.0/23')
-  rule	allow('ftp')
-  apply	insert

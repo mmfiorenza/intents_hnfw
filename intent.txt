@@ -1,6 +1,0 @@
-define intent traffic_shaping:
-  from	endpoint('192.168.1.2')
-  to	endpoint('200.19.30.2')
-  for	traffic('udp/5555')
-  with	throughput('30Mbps')
-  apply insert

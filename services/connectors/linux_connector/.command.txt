@@ -1,0 +1,15 @@
+ovs-ofctl del-flows s1
+
+ovs-ofctl add-flow s1 dl_type=0x800,priority=65535,nw_src=0.0.0.0/0.0.0.0,nw_dst=200.19.0.20,action=drop
+
+ovs-ofctl add-flow s1 dl_type=0x800,priority=65534,nw_src=10.0.0.0/255.255.255.0,nw_dst=0.0.0.0/0.0.0.0,nw_proto=6,tcp_dst=443,action=normal
+
+ovs-ofctl add-flow s1 dl_type=0x800,priority=65533,nw_src=10.0.0.0/255.255.255.0,nw_dst=0.0.0.0/0.0.0.0,nw_proto=6,tcp_dst=80,action=normal
+
+ovs-ofctl add-flow s1 dl_type=0x800,priority=65532,nw_src=10.0.0.10,nw_dst=200.19.0.10,nw_proto=6,tcp_dst=3306,action=normal
+
+ovs-ofctl add-flow s1 dl_type=0x800,priority=65531,nw_src=10.0.0.0/255.255.255.0,nw_dst=200.19.0.10,nw_proto=6,tcp_dst=3306,action=drop
+
+ovs-ofctl add-flow s1 dl_type=0x800,priority=65530,nw_src=0.0.0.0/0.0.0.0,nw_dst=0.0.0.0/0.0.0.0,action=drop
+
+ovs-ofctl add-flow s1 action=normal

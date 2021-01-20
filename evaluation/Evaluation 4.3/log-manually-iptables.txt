@@ -1,0 +1,53 @@
+Rules
+iptables -A FORWARD -s 0.0.0.0/0.0.0.0 -d 0.0.0.0/0.0.0.0 -p all -j DROP
+iptables -I FORWARD 1 -s 10.0.0.0/255.255.255.0 -d 0.0.0.0/0.0.0.0 -p tcp --dport 80 -j ACCEPT
+iptables -I FORWARD 1 -s 10.0.0.0/255.255.255.0 -d 0.0.0.0/0.0.0.0 -p tcp --dport 443 -j ACCEPT
+iptables -I FORWARD 3 -s 10.0.0.10 -d 200.19.0.100 -p tcp --dport 3306 -j ACCEPT
+iptables -I FORWARD 4 -s 10.0.0.0/255.255.255.0 -d 200.19.0.100 -p tcp --dport 3306 -j DROP
+iptables -I FORWARD 1 -s 0.0.0.0/0.0.0.0 -d 200.19.0.20 -p all -j DROP
+
+
+Log Firewall
+root@firewall-iptables:/# iptables -L
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain FORWARD (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination         
+root@firewall-iptables:/# iptables -A FORWARD -s 0.0.0.0/0.0.0.0 -d 0.0.0.0/0.0.0.0 -p all -j DROP
+root@firewall-iptables:/# iptables -I FORWARD 1 -s 10.0.0.0/255.255.255.0 -d 0.0.0.0/0.0.0.0 -p tcp --dport 80 -j ACCEPT
+root@firewall-iptables:/# iptables -I FORWARD 1 -s 10.0.0.0/255.255.255.0 -d 0.0.0.0/0.0.0.0 -p tcp --dport 443 -j ACCEPT
+root@firewall-iptables:/# iptables -L
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain FORWARD (policy ACCEPT)
+target     prot opt source               destination         
+ACCEPT     tcp  --  10.0.0.0/24          anywhere             tcp dpt:https
+ACCEPT     tcp  --  10.0.0.0/24          anywhere             tcp dpt:http
+DROP       all  --  anywhere             anywhere            
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination         
+root@firewall-iptables:/# iptables -I FORWARD 3 -s 10.0.0.10 -d 200.19.0.100 -p tcp --dport 3306 -j ACCEPT
+root@firewall-iptables:/# iptables -I FORWARD 4 -s 10.0.0.0/255.255.255.0 -d 200.19.0.100 -p tcp --dport 3306 -j DROP
+root@firewall-iptables:/# iptables -I FORWARD 1 -s 0.0.0.0/0.0.0.0 -d 200.19.0.20 -p all -j DROP
+root@firewall-iptables:/# iptables -L
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain FORWARD (policy ACCEPT)
+target     prot opt source               destination         
+DROP       all  --  anywhere             200.19.0.20         
+ACCEPT     tcp  --  10.0.0.0/24          anywhere             tcp dpt:https
+ACCEPT     tcp  --  10.0.0.0/24          anywhere             tcp dpt:http
+ACCEPT     tcp  --  10.0.0.10            200.19.0.100         tcp dpt:mysql
+DROP       tcp  --  10.0.0.0/24          200.19.0.100         tcp dpt:mysql
+DROP       all  --  anywhere             anywhere            
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination         
+root@firewall-iptables:/#

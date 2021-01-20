@@ -1,0 +1,35 @@
+Rules
+
+ovs-ofctl add-flow s1 dl_type=0x800,nw_src=0.0.0.0/0.0.0.0,nw_dst=0.0.0.0/0.0.0.0,action=drop
+ovs-ofctl add-flow s1 dl_type=0x800,priority=65535,nw_src=10.0.0.0/255.255.255.0,nw_dst=0.0.0.0/0.0.0.0,nw_proto=6,tcp_dst=80,action=normal
+ovs-ofctl add-flow s1 dl_type=0x800,priority=65535,nw_src=10.0.0.0/255.255.255.0,nw_dst=0.0.0.0/0.0.0.0,nw_proto=6,tcp_dst=443,action=normal
+ovs-ofctl add-flow s1 dl_type=0x800,priority=65533,nw_src=10.0.0.10,nw_dst=200.19.0.10,nw_proto=6,tcp_dst=3306,action=normal
+ovs-ofctl add-flow s1 dl_type=0x800,priority=65532,nw_src=10.0.0.0/255.255.255.0,nw_dst=200.19.0.10,nw_proto=6,tcp_dst=3306,action=drop
+ovs-ofctl add-flow s1 dl_type=0x800,priority=65535,nw_src=0.0.0.0/0.0.0.0,nw_dst=200.19.0.20,action=drop
+
+
+Log Firewall
+
+root@N085151:~# ovs-ofctl dump-flows s1
+ cookie=0x0, duration=26116.324s, table=0, n_packets=24, n_bytes=1872, priority=0 actions=NORMAL
+root@N085151:~# ovs-ofctl add-flow s1 dl_type=0x800,nw_src=0.0.0.0/0.0.0.0,nw_dst=0.0.0.0/0.0.0.0,action=drop
+root@N085151:~# ovs-ofctl add-flow s1 dl_type=0x800,priority=65535,nw_src=10.0.0.0/255.255.255.0,nw_dst=0.0.0.0/0.0.0.0,nw_proto=6,tcp_dst=80,action=normal
+root@N085151:~# ovs-ofctl add-flow s1 dl_type=0x800,priority=65535,nw_src=10.0.0.0/255.255.255.0,nw_dst=0.0.0.0/0.0.0.0,nw_proto=6,tcp_dst=443,action=normal
+root@N085151:~# ovs-ofctl dump-flows s1
+ cookie=0x0, duration=12.304s, table=0, n_packets=0, n_bytes=0, priority=65535,tcp,nw_src=10.0.0.0/24,tp_dst=80 actions=NORMAL
+ cookie=0x0, duration=5.904s, table=0, n_packets=0, n_bytes=0, priority=65535,tcp,nw_src=10.0.0.0/24,tp_dst=443 actions=NORMAL
+ cookie=0x0, duration=20.929s, table=0, n_packets=0, n_bytes=0, ip actions=drop
+ cookie=0x0, duration=26152.870s, table=0, n_packets=24, n_bytes=1872, priority=0 actions=NORMAL
+root@N085151:~# ovs-ofctl add-flow s1 dl_type=0x800,priority=65533,nw_src=10.0.0.10,nw_dst=200.19.0.10,nw_proto=6,tcp_dst=3306,action=normal
+root@N085151:~# ovs-ofctl add-flow s1 dl_type=0x800,priority=65532,nw_src=10.0.0.0/255.255.255.0,nw_dst=200.19.0.10,nw_proto=6,tcp_dst=3306,action=drop
+root@N085151:~# ovs-ofctl add-flow s1 dl_type=0x800,priority=65535,nw_src=0.0.0.0/0.0.0.0,nw_dst=200.19.0.20,action=drop
+root@N085151:~# ovs-ofctl dump-flows s1
+ cookie=0x0, duration=51.849s, table=0, n_packets=0, n_bytes=0, priority=65535,tcp,nw_src=10.0.0.0/24,tp_dst=80 actions=NORMAL
+ cookie=0x0, duration=45.449s, table=0, n_packets=0, n_bytes=0, priority=65535,tcp,nw_src=10.0.0.0/24,tp_dst=443 actions=NORMAL
+ cookie=0x0, duration=4.568s, table=0, n_packets=0, n_bytes=0, priority=65535,ip,nw_dst=200.19.0.20 actions=drop
+ cookie=0x0, duration=18.343s, table=0, n_packets=0, n_bytes=0, priority=65533,tcp,nw_src=10.0.0.10,nw_dst=200.19.0.10,tp_dst=3306 actions=NORMAL
+ cookie=0x0, duration=9.360s, table=0, n_packets=0, n_bytes=0, priority=65532,tcp,nw_src=10.0.0.0/24,nw_dst=200.19.0.10,tp_dst=3306 actions=drop
+ cookie=0x0, duration=60.474s, table=0, n_packets=0, n_bytes=0, ip actions=drop
+ cookie=0x0, duration=26192.415s, table=0, n_packets=24, n_bytes=1872, priority=0 actions=NORMAL
+root@N085151:~#
+

@@ -1,0 +1,13 @@
+root@N085151:~# 
+root@N085151:~# 
+root@N085151:~# ovs-ofctl dump-flows s1
+ cookie=0x0, duration=435.589s, table=0, n_packets=0, n_bytes=0, priority=65535,ip,nw_dst=200.19.0.20 actions=drop
+ cookie=0x0, duration=434.584s, table=0, n_packets=0, n_bytes=0, priority=65534,tcp,nw_src=10.0.0.0/24,tp_dst=443 actions=NORMAL
+ cookie=0x0, duration=433.576s, table=0, n_packets=0, n_bytes=0, priority=65533,tcp,nw_src=10.0.0.0/24,tp_dst=80 actions=NORMAL
+ cookie=0x0, duration=432.569s, table=0, n_packets=0, n_bytes=0, priority=65532,tcp,nw_src=10.0.0.10,nw_dst=200.19.0.10,tp_dst=3306 actions=NORMAL
+ cookie=0x0, duration=431.562s, table=0, n_packets=0, n_bytes=0, priority=65531,tcp,nw_src=10.0.0.0/24,nw_dst=200.19.0.10,tp_dst=3306 actions=drop
+ cookie=0x0, duration=430.555s, table=0, n_packets=0, n_bytes=0, priority=65530,ip actions=drop
+ cookie=0x0, duration=429.547s, table=0, n_packets=0, n_bytes=0, actions=NORMAL
+root@N085151:~# 
+root@N085151:~# 
+root@N085151:~# 

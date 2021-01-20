@@ -1,0 +1,15 @@
+firewall-cisco(config)# 
+firewall-cisco(config)# 
+firewall-cisco(config)# show access-list
+access-list cached ACL log flows: total 0, denied 0 (deny-flow-max 4096)
+            alert-interval 300
+access-list inside_access_in; 6 elements; name hash: 0x433a1af1
+access-list inside_access_in line 1 extended deny ip any host 200.19.0.20 (hitcnt=0) 0xfdb26f1a 
+access-list inside_access_in line 2 extended permit tcp 10.0.0.0 255.255.255.0 any eq https (hitcnt=0) 0xec5c9adf 
+access-list inside_access_in line 3 extended permit tcp 10.0.0.0 255.255.255.0 any eq www (hitcnt=0) 0xa26ab2db 
+access-list inside_access_in line 4 extended permit tcp host 10.0.0.10 host 200.19.0.10 eq 3306 (hitcnt=0) 0xd683cdb3 
+access-list inside_access_in line 5 extended deny tcp 10.0.0.0 255.255.255.0 host 200.19.0.10 eq 3306 (hitcnt=0) 0x16c38c22 
+access-list inside_access_in line 6 extended deny ip any any (hitcnt=0) 0xbe9efe96 
+firewall-cisco(config)# 
+firewall-cisco(config)# 
+firewall-cisco(config)#

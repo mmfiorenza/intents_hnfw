@@ -1,6 +1,6 @@
 # Versão em português
 ## Protótipo de validação
-Este repositório traz o protótipo desenvolvido como forma de validação para a proposta de arquitetura que visa balizar o desenvolvimento de softwares para gerência de firewalls em redes híbridas.
+Este repositório traz o protótipo desenvolvido como forma de validação das linguagem e arquitetura propostas para gerenciamento de firewalls em redes híbridas (redes compostas de equipamentos tradicionais e SDN).
 
 ## Instalação do software
 ATENÇÃO: Esse processo de instação/utilização foi testado e validado para Ubuntu 18.04. Instalações em outras distribuições podem necessitar ajustes.
@@ -20,7 +20,7 @@ cd venv_firewall
 
 Faça o download do projeto utilizando git
 
-`git clone https://github.com/mmfiorenza/intents_hnfw.git`
+`git clone https://github.com/mmfiorenza/intents_hnfw`
 
 Acesse a pasta do projeto.
 
@@ -28,7 +28,7 @@ Acesse a pasta do projeto.
 
 Execute o script "preparing_environment.sh" para instalação das dependências
 
-`bash utils/preparing_environment.sh`
+`bash scripts/setup.sh`
 
 * Poderá ser solicitada a senha de usuário para instalação dos pacotes
 
@@ -41,11 +41,11 @@ Caso não esteja, execute o comando abaixo:
 
 Execute os módulos tradutores utilizando o script “run_application.sh”
 
-`bash utils/run_application.sh`
+`bash scripts/start_microservices.sh`
 
 Execute a API para recepção das intenções
 
-`python api.py`
+`python src/api.py`
 
 Em outro terminal, utilize o método HTTP POST (por exemplo: comando curl) para enviar a intenção em NILE para a aplicação:
 
@@ -67,7 +67,7 @@ Este software não possui nenhuma forma de suporte. Caso tenha alguma dúvida fa
 
 # English version
 ## Validation prototype
-This repository presents the prototype developed as a form of validation for the proposed architecture that aims to guide the development of software for firewall management in hybrid networks.
+This repository presents the prototype developed as a way of validating the proposed language and architecture for managing firewalls in hybrid networks (networks composed of traditional equipment and SDN).
 
 ## Software installation
 ATTENTION: This installation/use process has been tested and validated for Ubuntu 18.04. Installations in other distributions may require adjustments.
@@ -87,7 +87,7 @@ cd venv_firewall
 
 Download the project using git
 
-`git clone https://github.com/mmfiorenza/intents_hnfw.git`
+`git clone https://github.com/mmfiorenza/intents_hnfw`
 
 Access the project folder.
 
@@ -95,7 +95,7 @@ Access the project folder.
 
 Run the "preparing_environment.sh" script to install the dependenciess
 
-`bash utils/preparing_environment.sh`
+`bash scripts/setup.sh`
 
 
 ## Usage
@@ -107,13 +107,13 @@ If not, run the command below:
 Run the translator modules using the script “run_application.sh”
 
 ```bash
-bash utils/run_application.sh
+bash scripts/start_microservices.sh
 ```
 
 Run the API to receive intentions
 
 ```bash
-python api.py
+python src/api.py
 ```
 
 In another terminal, use the HTTP POST method (for example: curl command) to send the intention in NILE to the application:
